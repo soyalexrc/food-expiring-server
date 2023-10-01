@@ -1,0 +1,37 @@
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { User } from '../../user/entities/user.entity';
+import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { ConfigService } from '@nestjs/config';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    configService: ConfigService,
+  ) {
+    super({
+      secretOrKey: configService.get<string>('JWT_SECRET'),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    });
+  }
+
+  async validate(payload: JwtPayload): Promise<User> {
+    const { id } = payload;
+
+    const user = await this.userModel.findById(id);
+
+    if (!user) throw new UnauthorizedException('Token no valido!');
+
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        'Usuario inactivo, comuniquese con el administrador',
+      );
+    }
+
+    return user;
+  }
+}
