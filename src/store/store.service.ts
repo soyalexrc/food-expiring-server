@@ -104,7 +104,7 @@ export class StoreService {
 
       res.status(HttpStatus.OK).send({
         data,
-        message: `Se elimino la tienda ${store.title} con exito!`,
+        message: `Se elimino la tienda ${store.companyName} con exito!`,
       });
     } catch (err) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({

@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto, res: Response) {
-    const { masterPassword, email, isActive, userType } = registerDto;
+    const { email, isActive, userType } = registerDto;
 
     this.logger.debug(registerDto);
     try {
@@ -33,7 +33,6 @@ export class AuthService {
         email,
         isActive,
         userType,
-        masterPassword: bcrypt.hashSync(masterPassword, 10),
       });
 
       res.status(HttpStatus.OK).send(data);
@@ -68,12 +67,6 @@ export class AuthService {
           error: true,
           title: `El usuario (${email}) se encuentra deshabilitado`,
           message: `Por favor comuniquese con el administrador para poder ingresar de nuevo.`,
-        });
-        return;
-      } else if (!bcrypt.compareSync(masterPassword, user.password)) {
-        res.status(HttpStatus.BAD_REQUEST).send({
-          error: true,
-          message: `Error de credenciales: contrasenas no coinciden!`,
         });
         return;
       } else {

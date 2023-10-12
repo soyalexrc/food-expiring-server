@@ -6,10 +6,10 @@ export type StoreDocument = HydratedDocument<Store>;
 @Schema()
 export class Store {
   @Prop({ required: true, unique: true })
-  title: string;
+  companyName: string;
 
   @Prop({ required: true })
-  emailOwner: string;
+  ruc: string;
 
   @Prop()
   openingHours: Date;
@@ -21,22 +21,16 @@ export class Store {
   banner: string;
 
   @Prop({ required: true })
-  dniOwner: string;
+  password: string;
 
-  @Prop({ required: true })
-  nameOwner: string;
-
-  @Prop({ required: true })
-  lastNameOwner: string;
-
-  @Prop({ required: true })
+  @Prop()
   address: string;
 
   @Prop()
-  phoneNumber: string;
+  contactPhone: string;
 
   @Prop()
-  phoneNumberOwner: string;
+  contactEmail: string;
 
   @Prop()
   isActive: boolean;

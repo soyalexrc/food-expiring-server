@@ -1,12 +1,12 @@
-import { IsBoolean, IsEmail, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsString } from 'class-validator';
 
 export class CreateStoreDto {
   @IsString()
-  title: string;
+  companyName: string;
 
   @IsString()
   @IsEmail()
-  emailOwner: string;
+  contactEmail: string;
 
   @IsString()
   openingHours: string;
@@ -18,22 +18,16 @@ export class CreateStoreDto {
   banner: string;
 
   @IsString()
-  dniOwner: string;
+  ruc: string;
 
   @IsString()
-  nameOwner: string;
-
-  @IsString()
-  lastNameOwner: string;
+  password: string;
 
   @IsString()
   address: string;
 
   @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  phoneNumberOwner: string;
+  contactPhone: string;
 
   @IsBoolean()
   isActive: boolean;

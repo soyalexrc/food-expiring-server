@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { OtpModule } from './otp/otp.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CommonModule } from './common/common.module';
     ProductModule,
     AuthModule,
     CommonModule,
+    OtpModule,
   ],
 })
 export class AppModule {}

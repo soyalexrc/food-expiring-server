@@ -4,9 +4,6 @@ export class RegisterDto {
   @IsEmail()
   email: string;
 
-  @IsString()
-  masterPassword: string;
-
   @IsBoolean()
   isActive: boolean;
 
