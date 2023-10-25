@@ -18,7 +18,10 @@ export class User {
   lastName: string;
 
   @Prop()
-  address: string;
+  addresses: any[];
+
+  @Prop()
+  password: string;
 
   @Prop({ unique: true })
   phoneNumber: string;

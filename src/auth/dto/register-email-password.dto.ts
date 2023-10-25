@@ -1,6 +1,6 @@
-import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 
-export class CreateUserDto {
+export class RegisterEmailPasswordDto {
   @IsString()
   @IsEmail()
   email: string;
@@ -21,8 +21,8 @@ export class CreateUserDto {
   lastName: string;
 
   @IsOptional()
-  @IsString()
-  address: string;
+  @IsArray()
+  addresses: any[];
 
   @IsString()
   @IsOptional()

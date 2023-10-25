@@ -9,6 +9,7 @@ import { LoginEmailPasswordDto } from './dto/login-email-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { LoginBiometricsDto } from './dto/login-biometrics.dto';
+import { RegisterEmailPasswordDto } from './dto/register-email-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,15 +44,65 @@ export class AuthService {
     }
   }
 
+  async registerWithEmailAndPassword(
+    registerEmailPasswordDto: RegisterEmailPasswordDto,
+    res: Response,
+  ) {
+    const {
+      email,
+      password,
+      name,
+      lastName,
+      isActive,
+      userType,
+      dni,
+      addresses,
+      phoneNumber,
+    } = registerEmailPasswordDto;
+    try {
+      const userExistByEmail = await this.userModel.findOne({ email });
+
+      if (userExistByEmail) {
+        res.status(HttpStatus.BAD_REQUEST).send({
+          error: true,
+          message: `Ya existe un usuario con el correo : ${email}, ingresa otro correo electronico`,
+        });
+        return;
+      }
+
+      const data = await this.userModel.create({
+        email,
+        password: bcrypt.hashSync(password, 10),
+        name,
+        lastName,
+        isActive,
+        userType,
+        dni,
+        addresses,
+        phoneNumber,
+      });
+
+      res.status(HttpStatus.OK).send({
+        message: 'Se registro el usuario con exito!',
+        user: data,
+      });
+    } catch (err) {
+      this.logger.error(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        error: true,
+        message: `Ocurrio un error ${JSON.stringify(err)}`,
+      });
+    }
+  }
   async loginWithEmailAndPassword(
     loginEmailPasswordDto: LoginEmailPasswordDto,
     res: Response,
   ) {
     try {
-      const { email, masterPassword } = loginEmailPasswordDto;
+      const { email, password } = loginEmailPasswordDto;
       this.logger.debug({
         email,
-        masterPassword,
+        password,
       });
       const user = await this.userModel.findOne({ email: email });
 
@@ -67,6 +118,12 @@ export class AuthService {
           error: true,
           title: `El usuario (${email}) se encuentra deshabilitado`,
           message: `Por favor comuniquese con el administrador para poder ingresar de nuevo.`,
+        });
+        return;
+      } else if (!bcrypt.compareSync(password, user.password)) {
+        res.status(HttpStatus.BAD_REQUEST).send({
+          error: true,
+          message: `Error de credenciales: contrasenas no coinciden!`,
         });
         return;
       } else {

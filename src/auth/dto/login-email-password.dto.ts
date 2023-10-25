@@ -5,5 +5,5 @@ export class LoginEmailPasswordDto {
   email: string;
 
   @IsString()
-  masterPassword: string;
+  password: string;
 }

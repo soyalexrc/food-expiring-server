@@ -4,6 +4,7 @@ import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
 import { LoginEmailPasswordDto } from './dto/login-email-password.dto';
 import { LoginBiometricsDto } from './dto/login-biometrics.dto';
+import { RegisterEmailPasswordDto } from "./dto/register-email-password.dto";
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,17 @@ export class AuthController {
   ) {
     return this.authService.loginWithEmailAndPassword(
       loginEmailPasswordDto,
+      res,
+    );
+  }
+
+  @Post('registerWithEmailAndPassword')
+  registerWithEmailAndPassword(
+    @Body() registerEmailPasswordDto: RegisterEmailPasswordDto,
+    @Res() res: Response,
+  ) {
+    return this.authService.registerWithEmailAndPassword(
+      registerEmailPasswordDto,
       res,
     );
   }
