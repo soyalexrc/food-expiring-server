@@ -83,8 +83,9 @@ export class AuthService {
       });
 
       res.status(HttpStatus.OK).send({
-        message: 'Se registro el usuario con exito!',
+        message: `Bienvenido/@, ${data.name}`,
         user: data,
+        token: this.getJwtToken({ id: data.id }),
       });
     } catch (err) {
       this.logger.error(err);
@@ -129,7 +130,7 @@ export class AuthService {
       } else {
         res.status(HttpStatus.OK).send({
           token: this.getJwtToken({ id: user.id }),
-          message: `Bienvenido/@ de vuelta, ${user.email}`,
+          message: `Bienvenido/@, ${user.email}`,
           user,
           // allowedRoutes: getAllowedRoutesByRole(user.userType),
         });
