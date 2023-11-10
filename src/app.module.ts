@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { OtpModule } from './otp/otp.module';
+import { PredeterminedProductModule } from './predetermined-product/predetermined-product.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { OtpModule } from './otp/otp.module';
     AuthModule,
     CommonModule,
     OtpModule,
+    PredeterminedProductModule,
   ],
 })
 export class AppModule {}
